@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: the-trust
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./Dockerfile.production
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: false
+    disk:
+      name: the-trust-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        value: sqlite:////data/the_trust.db
+      - key: JWT_ISSUER
+        value: the-trust
+      - key: ACCESS_TOKEN_MINUTES
+        value: "30"
+      - key: CORS_ORIGINS
+        value: ""
+      - key: JWT_SECRET
+        sync: false
+      - key: WEBHOOK_SECRET
+        sync: false
